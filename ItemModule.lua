@@ -1,28 +1,27 @@
 local Module = {}
-
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 
-local LocalPlayer = Players.LocalPlayer
-local ProfileData = require(game.ReplicatedStorage.Modules.ProfileData)
+return function()
+	local LocalPlayer = Players.LocalPlayer
+	local ProfileData = require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("ProfileData"))
 
-local ItemsFolder = Instance.new("Folder")
-ItemsFolder.Name = "Items"
-ItemsFolder.Parent = workspace
+	local ItemsFolder = Instance.new("Folder")
+	ItemsFolder.Name = "Items"
+	ItemsFolder.Parent = workspace
 
-local function CloneItem(Item, ItemType)
-	if not ItemsFolder:FindFirstChild(ProfileData.Weapons.Equipped[ItemType]) then
-		local Clone = Item:Clone()
-		Clone.Anchored = true
-		Clone.Name = ProfileData.Weapons.Equipped[ItemType]
-		Clone.Parent = ItemsFolder
-		return Clone
-	else
-		warn("Clone already exists in ItemsFolder!")
+	local function CloneItem(Item, ItemType)
+		if not ItemsFolder:FindFirstChild(ProfileData.Weapons.Equipped[ItemType]) then
+			local Clone = Item:Clone()
+			Clone.Anchored = true
+			Clone.Name = ProfileData.Weapons.Equipped[ItemType]
+			Clone.Parent = ItemsFolder
+			return Clone
+		else
+			warn("Clone already exists in ItemsFolder!")
+		end
 	end
-end
-
-function Module.Start()
+	
 	if not LocalPlayer.Character or not LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 		LocalPlayer.CharacterAdded:Wait()
 	end
@@ -56,5 +55,3 @@ function Module.Start()
 		end)
 	end
 end
-
-return Module
